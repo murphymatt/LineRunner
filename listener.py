@@ -26,9 +26,8 @@ def checkSpeech(spoken, actual):
         return True
     else:
         return False
-        
 
-# simple testing
+# simple testing"
 s = listenToSpeech()
 print checkSpeech(s, "box")
 print checkSpeech(s, "hello")
