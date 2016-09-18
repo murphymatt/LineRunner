@@ -10,8 +10,8 @@ FILENAME = "SCRIPT2"
 def main():
   for d in os.listdir('.'):
     if os.path.isdir(d):
-      print d
-  print
+      print d,
+  print "\n"
   
   script_dir = raw_input("Please enter name of script files directory:  ")
   l = Listener()
@@ -28,10 +28,10 @@ def main():
 
   script = open(script_dir + '/' + script_name, 'r')
   # list character options to user
-  print "Characters:\n"
+  print "Characters:"
   for person in getCharacters(script):
     print person,
-  print '\n'
+  print "\n"
   character = raw_input('Which character will you be reading? ')
   prompt = get_next_prompt(character, script)
 
