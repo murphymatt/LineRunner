@@ -1,17 +1,34 @@
-from listener import Listener
 import re
-FILENAME = "SCRIPT"
+
+from listener import Listener
+from speaker import Speaker
+
+FILENAME = "SCRIPT2"
 
 def main():
   script = open(FILENAME, 'r')
+  l = Listener()
+  s = Speaker()
+
+  # list character options to user
+  print "Characters:\n"
+  for person in getCharacters(script):
+    print person,
+  print '\n'
   character = raw_input('Which character will you be reading? ')
   prompt = get_next_prompt(character, script)
 
   while prompt != None:
-    present(prompt)
+    present(l, s, prompt)
     prompt = get_next_prompt(character, script)
 
   print "All done!"
+
+def getCharacters(file):
+  line = file.readline()
+  if '[' not in line:
+    line = file.readline()
+  return line[1:-2].split(',')
   
 def get_next_line(file):
   input = file.readline()
@@ -37,12 +54,12 @@ def get_next_prompt(character, file):
     return None
   return (cue, line)
 
-def present(prompt, tries_allowed = 3):
+def present(listener, speaker, prompt, tries_allowed = 3):
   if prompt[0] == None:
     print "Lights up!"
   else:
-    print prompt[0][0] + ": " + prompt[0][1]
-  listener = Listener()
+    speaker.say_line(str(prompt[0][0] + ": " + prompt[0][1]))
+#  listener = Listener()
   for i in (1,tries_allowed):
     print "Listening for your line..."
     response = listener.listen_to_speech()
@@ -53,9 +70,12 @@ def present(prompt, tries_allowed = 3):
       print "Not quite... Try again."
   print "Your line is: " + prompt[1][1]
   print "Try it again!"
-  return present(prompt, tries_allowed)
+  return present(listener, prompt, tries_allowed)
 
 def verify(expected, spoken):
   e = re.sub('[!?.,:;]', '', expected)
   s = re.sub('[!?.,:;]', '', spoken)
   return e.lower() == s.lower()
+
+if __name__=='__main__':
+  main()
