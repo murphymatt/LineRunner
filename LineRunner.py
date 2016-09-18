@@ -1,3 +1,5 @@
+from listener import listenToSpeech
+
 FILENAME = "SCRIPT"
 
 def get_next_line(file):
@@ -30,4 +32,12 @@ def main():
 
 def present(prompt):
   print prompt[0][0] + ": " + prompt[0][1]
-  
+  response = listenToSpeech()
+  if verify(prompt[1][1], response):
+    print "You correctly responded: " + response
+    return;
+  else:
+    print "Heard: " + response 
+
+def verify(expected, spoken):
+  return expected.lower() == spoken.lower()
