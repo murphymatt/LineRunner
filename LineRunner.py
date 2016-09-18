@@ -58,5 +58,4 @@ def present(prompt, tries_allowed = 3):
 def verify(expected, spoken):
   e = re.sub('[!?.,:;]', '', expected)
   s = re.sub('[!?.,:;]', '', spoken)
-  print e + "\n" + s
   return e.lower() == s.lower()
