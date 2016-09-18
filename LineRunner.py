@@ -1,3 +1,4 @@
+import os
 import re
 
 from listener import Listener
@@ -7,7 +8,11 @@ from navigator import Navigator
 FILENAME = "SCRIPT2"
 
 def main():
-#  script = open(FILENAME, 'r')
+  for d in os.listdir('.'):
+    if os.path.isdir(d):
+      print d
+  print
+  
   script_dir = raw_input("Please enter name of script files directory:  ")
   l = Listener()
   s = Speaker()
@@ -15,12 +20,13 @@ def main():
 
   n.display_files()
   script_name = raw_input("Please select a script file:  ")
+
   if not n.choose_file(script_name):
     print "File not found in directory"
     script_name = raw_input("Please re-enter the file name:  ")
     n.choose_file(script_name)
 
-  script = open(script_name, 'r')
+  script = open(script_dir + '/' + script_name, 'r')
   # list character options to user
   print "Characters:\n"
   for person in getCharacters(script):
