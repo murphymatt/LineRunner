@@ -2,6 +2,17 @@ from listener import Listener
 import re
 FILENAME = "SCRIPT"
 
+def main():
+  script = open(FILENAME, 'r')
+  character = raw_input('Which character will you be reading? ')
+  prompt = get_next_prompt(character, script)
+
+  while prompt != None:
+    present(prompt)
+    prompt = get_next_prompt(character, script)
+
+  print "All done!"
+  
 def get_next_line(file):
   input = file.readline()
   if input == '':
@@ -22,12 +33,17 @@ def get_next_prompt(character, file):
     skipped_lines += 1
     cue = line
     line = get_next_line(file)
+  if line == None:
+    return None
   return (cue, line)
 
 def present(prompt, tries_allowed = 3):
-  print prompt[0][0] + ": " + prompt[0][1]
+  if prompt[0] == None:
+    print "Lights up!"
+  else:
+    print prompt[0][0] + ": " + prompt[0][1]
   listener = Listener()
-  for i in (0,tries_allowed):
+  for i in (1,tries_allowed):
     print "Listening for your line..."
     response = listener.listen_to_speech()
     if verify(prompt[1][1], response):
@@ -40,13 +56,7 @@ def present(prompt, tries_allowed = 3):
   return present(prompt, tries_allowed)
 
 def verify(expected, spoken):
-  e = re.sub('[!.,:;]', '', expected)
-  s = re.sub('[!.,:;]', '', spoken)
+  e = re.sub('[!?.,:;]', '', expected)
+  s = re.sub('[!?.,:;]', '', spoken)
+  print e + "\n" + s
   return e.lower() == s.lower()
-
-def main():
-  script = open(FILENAME, 'r')
-  character = raw_input('Which character will you be reading? ')
-  prompt = get_next_prompt(character, script)
-  present(prompt)
-
