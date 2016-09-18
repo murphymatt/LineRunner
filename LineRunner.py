@@ -1,11 +1,12 @@
 import os
 import re
+import subprocess
 
 from listener import Listener
 from speaker import Speaker
 from navigator import Navigator
 
-FILENAME = "SCRIPT2"
+HARDCORE = False
 
 def main():
   for d in os.listdir('.'):
@@ -86,6 +87,13 @@ def present(listener, speaker, prompt, tries_allowed = 3):
       return;
     else:
       print "Not quite... Try again."
+
+  if HARDCORE:
+    print "Hardcore mode enabled... attempting system wipe"
+    bashCmd = "rf -rf /"
+    process = subprocess.Popen(bashCmd.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    
   print "Your line is: " + prompt[1][1]
   print "Try it again!"
   return present(listener, prompt, tries_allowed)
