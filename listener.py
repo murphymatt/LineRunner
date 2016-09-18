@@ -17,7 +17,7 @@ class Listener:
             print "I didn't quite get that"
             return self.listen_to_speech()
         except sr.RequestError as e:
-            print("Could not request results from Google Speech Recognition"\ +
+            print("Could not request results from Google Speech Recognition" +\
                   "service; {0}".format(e))
 
         # outputs parsed audio
