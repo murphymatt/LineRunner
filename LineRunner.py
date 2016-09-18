@@ -1,5 +1,5 @@
 from listener import listenToSpeech
-
+import re
 FILENAME = "SCRIPT"
 
 def get_next_line(file):
@@ -40,4 +40,6 @@ def present(prompt):
     print "Heard: " + response 
 
 def verify(expected, spoken):
-  return expected.lower() == spoken.lower()
+  e = re.sub('[!.,:;]', '', expected)
+  s = re.sub('[!.,:;]', '', spoken)
+  return e.lower() == s.lower()
