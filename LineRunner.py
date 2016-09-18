@@ -2,14 +2,25 @@ import re
 
 from listener import Listener
 from speaker import Speaker
+from navigator import Navigator
 
 FILENAME = "SCRIPT2"
 
 def main():
-  script = open(FILENAME, 'r')
+#  script = open(FILENAME, 'r')
+  script_dir = raw_input("Please enter name of script files directory:  ")
   l = Listener()
   s = Speaker()
+  n = Navigator(script_dir)
 
+  n.display_files()
+  script_name = raw_input("Please select a script file:  ")
+  if not n.choose_file(script_name):
+    print "File not found in directory"
+    script_name = raw_input("Please re-enter the file name:  ")
+    n.choose_file(script_name)
+
+  script = open(script_name, 'r')
   # list character options to user
   print "Characters:\n"
   for person in getCharacters(script):
@@ -58,6 +69,7 @@ def present(listener, speaker, prompt, tries_allowed = 3):
   if prompt[0] == None:
     print "Lights up!"
   else:
+    print prompt[0][0] + ": " + prompt[0][1]
     speaker.say_line(str(prompt[0][0] + ": " + prompt[0][1]))
 #  listener = Listener()
   for i in (1,tries_allowed):
