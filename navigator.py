@@ -7,7 +7,8 @@ class Navigator:
 
     def display_files(self):
         for f in os.listdir(self.root):
-            print f
+            print f,
+        print "\n"
         
     def choose_file(self, fname):
         if fname in os.listdir(self.root):
