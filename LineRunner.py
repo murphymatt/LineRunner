@@ -1,4 +1,4 @@
-from listener import listenToSpeech
+from listener import Listener
 import re
 FILENAME = "SCRIPT"
 
@@ -24,22 +24,29 @@ def get_next_prompt(character, file):
     line = get_next_line(file)
   return (cue, line)
 
+def present(prompt, tries_allowed = 3):
+  print prompt[0][0] + ": " + prompt[0][1]
+  listener = Listener()
+  for i in (0,tries_allowed):
+    print "Listening for your line..."
+    response = listener.listen_to_speech()
+    if verify(prompt[1][1], response):
+      print "You correctly responded: " + response
+      return;
+    else:
+      print "Not quite... Try again."
+  print "Your line is: " + prompt[1][1]
+  print "Try it again!"
+  return present(prompt, tries_allowed)
+
+def verify(expected, spoken):
+  e = re.sub('[!.,:;]', '', expected)
+  s = re.sub('[!.,:;]', '', spoken)
+  return e.lower() == s.lower()
+
 def main():
   script = open(FILENAME, 'r')
   character = raw_input('Which character will you be reading? ')
   prompt = get_next_prompt(character, script)
   present(prompt)
 
-def present(prompt):
-  print prompt[0][0] + ": " + prompt[0][1]
-  response = listenToSpeech()
-  if verify(prompt[1][1], response):
-    print "You correctly responded: " + response
-    return;
-  else:
-    print "Heard: " + response 
-
-def verify(expected, spoken):
-  e = re.sub('[!.,:;]', '', expected)
-  s = re.sub('[!.,:;]', '', spoken)
-  return e.lower() == s.lower()

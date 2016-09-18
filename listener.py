@@ -6,7 +6,6 @@ class Listener:
         self.r = sr.Recognizer()
 
     def listen_to_speech(self):
-        print ("Recording... ")
         with sr.Microphone() as source:
             audio = self.r.listen(source)
 
@@ -15,7 +14,8 @@ class Listener:
             # for testing purposes, we're just using the default API key
             print("You said: " + self.r.recognize_google(audio))
         except sr.UnknownValueError:
-            print("Google Speech Recognition could not understand audio")
+            print "I didn't quite get that"
+            return self.listen_to_speech()
         except sr.RequestError as e:
             print("Could not request results from Google Speech Recognition service; {0}"\
                   .format(e))
